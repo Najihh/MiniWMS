@@ -1,34 +1,69 @@
+<!DOCTYPE html>
 <html>
-<style>
-html {
-  overflow: hidden;
-  background-color: black;
-}
-html,
-body,
-div,
-iframe {
-  margin: 0px;
-  padding: 0px;
-  height: 100%;
-  border: none;
-  display: block;
-  width: 100%;
-  border: none;
-  overflow: hidden;
-  padding-bottom: 100;
-}
-</style>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: black;
+    }
+    #player-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
 <body>
-  <iframe
-    id="thisIframe"
-    width="100%" height="100%"
-    src="https://www.youtube.com/embed/jzD_yyEcp0M?rel=0&enablejsapi=1&autoplay=1&showInfo=0&controls=0&fullscreen=1" frameborder="0" allowfullscreen="true"></iframe>
+  <div id="player-container">
+    <iframe
+      id="thisIframe"
+      src=""
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen="true"
+      allowsInlineMediaPlayback="true">
+    </iframe>
+  </div>
+
+  <script>
+    // Get video ID from URL parameter or use default
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const videoId = urlParams.get('videoId') || 'jzD_yyEcp0M';
+    
+    // YouTube embed URL with optimized parameters for React Native WebView
+    const iframe = document.getElementById('thisIframe');
+    iframe.src = `https://www.youtube.com/embed/${videoId}?` + new URLSearchParams({
+      autoplay: '0',
+      controls: '1',
+      showinfo: '0',
+      rel: '0',
+      enablejsapi: '1',
+      playsinline: '1',
+      fs: '1',
+      modestbranding: '1'
+    }).toString();
+
+    // Prevent scroll and zoom on mobile
+    document.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+  </script>
 </body>
-<script>
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  var s = document.getElementById('thisIframe');
-  s.src = `https://www.youtube.com/embed/${urlParams.get('videoId')}?rel=0&enablejsapi=1&autoplay=1&showInfo=0&controls=0&fullscreen=1`;
-</script>
 </html>
